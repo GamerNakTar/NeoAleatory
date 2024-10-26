@@ -1,0 +1,15 @@
+root = true
+
+[*]
+charset = utf-8
+
+# ReSharper properties
+resharper_space_between_attribute_sections = false
+
+[*.cs]
+charset = utf-8
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+resharper_csharp_space_between_attribute_sections = false
