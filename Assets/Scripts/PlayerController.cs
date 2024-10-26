@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour, IPlayerController
 {
@@ -12,6 +14,18 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private FrameInput _frameInput;
     private Vector2 _frameVelocity;
     private bool _cachedQueryStartInColliders;
+
+    [Header("Control Keys")] public KeyCode rightKey;
+    public KeyCode leftKey;
+    public KeyCode upKey;
+    public KeyCode downKey;
+    public KeyCode jumpKey;
+    public KeyCode dashKey;
+
+    [Header("Timer")] public float timerCycle;
+    public float timerTime;
+
+    [Header("Randomness")] public bool allowOverlap;
 
     #region Interface
 
@@ -29,21 +43,27 @@ public class PlayerController : MonoBehaviour, IPlayerController
         _col = GetComponent<CapsuleCollider2D>();
 
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
+
+        SetKeysToDefault();
     }
 
     private void Update()
     {
         _time += Time.deltaTime;
+        timerTime += Time.deltaTime;
+        CheckTimer();
         GatherInput();
     }
+
+    #region Input
 
     private void GatherInput()
     {
         _frameInput = new FrameInput
         {
-            JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
-            JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C),
-            Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"))
+            JumpDown = Input.GetKeyDown(jumpKey),
+            JumpHeld = Input.GetKey(jumpKey),
+            Move = GetMove()
         };
 
         if (_stats.SnapInput)
@@ -58,6 +78,95 @@ public class PlayerController : MonoBehaviour, IPlayerController
             _timeJumpWasPressed = _time;
         }
     }
+
+    private Vector2 GetMove()
+    {
+        int right = Convert.ToInt32(Input.GetKey(rightKey));
+        int left = Convert.ToInt32(Input.GetKey(leftKey));
+        int up = Convert.ToInt32(Input.GetKey(upKey));
+        int down = Convert.ToInt32(Input.GetKey(downKey));
+
+        return new Vector2(right - left, up - down);
+    }
+
+    #endregion Input
+
+    #region RandomKey
+
+    public KeyCode GetRandomKeyCode()
+    {
+        List<KeyCode> keys = new List<KeyCode>()
+        {
+            KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y, KeyCode.U, KeyCode.I, KeyCode.O,
+            KeyCode.P,
+            KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J, KeyCode.K, KeyCode.L,
+            KeyCode.Z, KeyCode.X, KeyCode.C, KeyCode.V, KeyCode.B, KeyCode.N, KeyCode.M,
+            KeyCode.Alpha0, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5,
+            KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9,
+            KeyCode.Tab, KeyCode.CapsLock, KeyCode.LeftShift, KeyCode.LeftControl, KeyCode.LeftAlt, KeyCode.BackQuote,
+            KeyCode.Escape,
+            KeyCode.Minus, KeyCode.Equals, KeyCode.Backspace, KeyCode.LeftBracket, KeyCode.RightBracket,
+            KeyCode.Backslash, KeyCode.Semicolon, KeyCode.Quote, KeyCode.Return,
+            KeyCode.Comma, KeyCode.Period, KeyCode.Slash, KeyCode.RightShift, KeyCode.RightAlt, KeyCode.RightControl,
+            KeyCode.Space
+        };
+
+        return keys[UnityEngine.Random.Range(0, keys.Count)];
+    }
+
+    public void RandomizeKeys()
+    {
+        rightKey = GetRandomKeyCode();
+        leftKey = GetRandomKeyCode();
+        upKey = GetRandomKeyCode();
+        downKey = GetRandomKeyCode();
+        jumpKey = GetRandomKeyCode();
+        dashKey = GetRandomKeyCode();
+
+        if (!allowOverlap)
+        {
+            List<KeyCode> currKeys = new List<KeyCode>()
+            {
+                rightKey, leftKey, upKey, downKey, jumpKey, dashKey
+            };
+
+            for (int i = 0; i < currKeys.Count; i++)
+            {
+                for (int j = i + 1; j < currKeys.Count; j++)
+                {
+                    while (currKeys[i] == currKeys[j])
+                    {
+                        currKeys[j] = GetRandomKeyCode();
+                    }
+                }
+            }
+        }
+    }
+
+    public void SetKeysToDefault()
+    {
+        rightKey = KeyCode.D;
+        leftKey = KeyCode.A;
+        upKey = KeyCode.W;
+        downKey = KeyCode.S;
+        jumpKey = KeyCode.Space;
+        dashKey = KeyCode.LeftShift;
+    }
+
+    #endregion RandomKey
+
+    #region Timer
+
+    public void CheckTimer()
+    {
+        if (timerTime >= timerCycle)
+        {
+            timerTime -= timerCycle;
+            RandomizeKeys();
+        }
+    }
+
+    #endregion Timer
 
     private void FixedUpdate()
     {
