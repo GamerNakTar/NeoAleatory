@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     public GameObject player;
 
     private PlayerController _playerController;
-    private Rigidbody _playerRigidbody;
+    private Rigidbody2D _playerRigidbody;
 
     [Header("Settings")]
     public float moveSpeed;
@@ -27,7 +27,7 @@ public class CameraController : MonoBehaviour
     {
         _target = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
         _playerController = player.GetComponent<PlayerController>();
-        _playerRigidbody = player.GetComponent<Rigidbody>();
+        _playerRigidbody = player.GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame

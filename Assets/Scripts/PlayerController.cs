@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public KeyCode dashKey;
 
     [Header("Randomness")] public bool allowOverlap;
+    public bool turnRandomOff;
 
     #region Interface
 
@@ -128,6 +129,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     public void RandomizeKeys()
     {
+        if (turnRandomOff) return;
+
         rightKey = GetRandomKeyCode();
         leftKey = GetRandomKeyCode();
         upKey = GetRandomKeyCode();
@@ -218,7 +221,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     }
 
     #endregion
-    
+
     #region Jumping
 
     private bool _jumpToConsume;
