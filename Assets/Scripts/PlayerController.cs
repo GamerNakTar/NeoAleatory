@@ -104,7 +104,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
             KeyCode.Alpha0, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5,
             KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9,
             KeyCode.Tab, KeyCode.CapsLock, KeyCode.LeftShift, KeyCode.LeftControl, KeyCode.LeftAlt, KeyCode.BackQuote,
-            KeyCode.Escape,
             KeyCode.Minus, KeyCode.Equals, KeyCode.Backspace, KeyCode.LeftBracket, KeyCode.RightBracket,
             KeyCode.Backslash, KeyCode.Semicolon, KeyCode.Quote, KeyCode.Return,
             KeyCode.Comma, KeyCode.Period, KeyCode.Slash, KeyCode.RightShift, KeyCode.RightAlt, KeyCode.RightControl,
