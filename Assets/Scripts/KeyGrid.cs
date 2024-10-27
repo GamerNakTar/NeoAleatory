@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class KeyGrid : MonoBehaviour
@@ -61,7 +56,6 @@ public class KeyGrid : MonoBehaviour
         _downRect = downKey.GetComponent<RectTransform>();
         _jumpRect = jumpKey.GetComponent<RectTransform>();
 
-        _background = background.GetComponent<RectTransform>();
         dynamicTileBackground = background.GetComponent<DynamicTileBackground>();
     }
 
@@ -130,15 +124,14 @@ public class KeyGrid : MonoBehaviour
 
     #region Background
 
-    private RectTransform _background;
-
     private void ResizeBackground()
     {
         // horizontal resize
         var width = _leftSprite.bounds.size.x * spriteScale + _downSprite.bounds.size.x * spriteScale + _rightSprite.bounds.size.x * spriteScale + _jumpSprite.bounds.size.x * spriteScale + xPadding * 2 + xSpacing * 2 + blockSpacing;
         var height = _downSprite.bounds.size.y * spriteScale + _upSprite.bounds.size.y * spriteScale + ySpacing +
                      yPadding * 2;
-        _background.sizeDelta = new Vector2(width, height);
+        dynamicTileBackground.rectWidth = width;
+        dynamicTileBackground.rectHeight = height;
         background.transform.localPosition = new Vector3(transform.localPosition.x + width / 2, transform.localPosition.y - height / 2, 0);
         dynamicTileBackground.SetBackground(width, height);
     }

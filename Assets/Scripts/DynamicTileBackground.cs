@@ -16,16 +16,21 @@ public class DynamicTileBackground : MonoBehaviour
     [SerializeField] private RectTransform bottomSideRect;
     [SerializeField] private RectTransform fillRect;
 
-    [SerializeField] private Image referenceIamge;
+    [SerializeField] private Image referenceImage;
     [SerializeField] private float spriteScale;
     private float _tileSize;
     private float _actualTileSize;
 
+    public float rectWidth;
+    public float rectHeight;
+
     // Start is called before the first frame update
     void Start()
     {
-        _tileSize = referenceIamge.sprite.bounds.size.x;
+        _tileSize = referenceImage.sprite.bounds.size.x;
         _actualTileSize = _tileSize * spriteScale;
+        Debug.Log(_actualTileSize);
+        gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(rectWidth, rectHeight);
     }
 
     public void SetBackground(float width, float height)

@@ -31,6 +31,6 @@ public class TimerManager : MonoBehaviour
 
     private void UpdateSlider()
     {
-        timerBar.fillAmount = time / timerCycle;
+        timerBar.fillAmount = (timerCycle - time) / timerCycle;
     }
 }
