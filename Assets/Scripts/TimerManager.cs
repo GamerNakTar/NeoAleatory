@@ -14,24 +14,22 @@ public class TimerManager : MonoBehaviour
     [Header("UI")] public Image timerBar;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         time += Time.deltaTime;
         CheckTimer();
         UpdateSlider();
     }
 
-    public void CheckTimer()
+    private void CheckTimer()
     {
-        if (time >= timerCycle)
-        {
-            time -= timerCycle;
-            player.RandomizeKeys();
-            keyGrid.UpdateKeyGrid();
-        }
+        if (time < timerCycle) return;
+        time -= timerCycle;
+        player.RandomizeKeys();
+        keyGrid.UpdateKeyGrid();
     }
 
-    public void UpdateSlider()
+    private void UpdateSlider()
     {
         timerBar.fillAmount = time / timerCycle;
     }

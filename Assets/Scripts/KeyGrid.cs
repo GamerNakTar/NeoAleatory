@@ -8,22 +8,20 @@ using UnityEngine.UI;
 
 public class KeyGrid : MonoBehaviour
 {
-    [Header("KeyUIs")]
-    public GameObject leftKey;
-    public GameObject rightKey;
-    public GameObject upKey;
-    public GameObject downKey;
-    public GameObject jumpKey;
+    // KeyUI GameObjects
+    private static GameObject _leftKey;
+    private static GameObject _rightKey;
+    private static GameObject _upKey;
+    private static GameObject _downKey;
+    private static GameObject _jumpKey;
 
-    [Header("Background")]
-    public GameObject background;
-
-    public float height;
+    // Background GameObject
+    private static GameObject _background;
 
     [Header("Offsets")][SerializeField] private float xSpacing;
     [SerializeField] private float ySpacing;
-    [SerializeField] private float xOffset;
-    [SerializeField] private float yOffset;
+    [SerializeField] private float xPadding;
+    [SerializeField] private float yPadding;
     [SerializeField] private float blockOffset;
 
     [Header("Sprites")]
@@ -33,15 +31,20 @@ public class KeyGrid : MonoBehaviour
 
     [SerializeField] private PlayerController playerController;
 
-    private Sprite leftSprite;
-    private Sprite rightSprite;
-    private Sprite upSprite;
-    private Sprite downSprite;
-    private Sprite jumpSprite;
+    private Sprite _leftSprite;
+    private Sprite _rightSprite;
+    private Sprite _upSprite;
+    private Sprite _downSprite;
+    private Sprite _jumpSprite;
 
     private void Start()
     {
         UpdateKeyGrid();
+        _leftKey = GameObject.Find("LeftKey");
+        _rightKey = GameObject.Find("RightKey");
+        _upKey = GameObject.Find("UpKey");
+        _downKey = GameObject.Find("DownKey");
+        _jumpKey = GameObject.Find("JumpKey");
     }
 
     public void UpdateKeyGrid()
@@ -51,47 +54,71 @@ public class KeyGrid : MonoBehaviour
         ResizeBackground();
     }
 
-    public void ChangeSprites()
+    #region Sprite
+
+    private readonly Image _leftImage = _leftKey.GetComponent<Image>();
+    private readonly Image _rightImage = _rightKey.GetComponent<Image>();
+    private readonly Image _upImage = _upKey.GetComponent<Image>();
+    private readonly Image _downImage = _downKey.GetComponent<Image>();
+    private readonly Image _jumpImage = _jumpKey.GetComponent<Image>();
+
+    private readonly RectTransform _leftRect = _leftKey.GetComponent<RectTransform>();
+    private readonly RectTransform _rightRect = _rightKey.GetComponent<RectTransform>();
+    private readonly RectTransform _upRect = _upKey.GetComponent<RectTransform>();
+    private readonly RectTransform _downRect = _downKey.GetComponent<RectTransform>();
+    private readonly RectTransform _jumpRect = _jumpKey.GetComponent<RectTransform>();
+
+    private void ChangeSprites()
     {
         // maybe using Resources.Load is a better idea
-        leftSprite = sprites[playerController.GetIndexOfKeyCode(playerController.leftKey)];
-        rightSprite = sprites[playerController.GetIndexOfKeyCode(playerController.rightKey)];
-        upSprite = sprites[playerController.GetIndexOfKeyCode(playerController.upKey)];
-        downSprite = sprites[playerController.GetIndexOfKeyCode(playerController.downKey)];
-        jumpSprite = sprites[playerController.GetIndexOfKeyCode(playerController.jumpKey)];
+        _leftSprite = sprites[playerController.GetIndexOfKeyCode(playerController.leftKey)];
+        _rightSprite = sprites[playerController.GetIndexOfKeyCode(playerController.rightKey)];
+        _upSprite = sprites[playerController.GetIndexOfKeyCode(playerController.upKey)];
+        _downSprite = sprites[playerController.GetIndexOfKeyCode(playerController.downKey)];
+        _jumpSprite = sprites[playerController.GetIndexOfKeyCode(playerController.jumpKey)];
 
-        leftKey.GetComponent<Image>().sprite = leftSprite;
-        rightKey.GetComponent<Image>().sprite = rightSprite;
-        upKey.GetComponent<Image>().sprite = upSprite;
-        downKey.GetComponent<Image>().sprite = downSprite;
-        jumpKey.GetComponent<Image>().sprite = jumpSprite;
+        _leftImage.sprite = _leftSprite;
+        _rightImage.sprite = _rightSprite;
+        _upImage.sprite = _upSprite;
+        _downImage.sprite = _downSprite;
+        _jumpImage.sprite = _jumpSprite;
 
-        leftKey.GetComponent<RectTransform>().sizeDelta = leftSprite.bounds.size * spriteScale;
-        rightKey.GetComponent<RectTransform>().sizeDelta = rightSprite.bounds.size * spriteScale;
-        upKey.GetComponent<RectTransform>().sizeDelta = upSprite.bounds.size * spriteScale;
-        downKey.GetComponent<RectTransform>().sizeDelta = downSprite.bounds.size * spriteScale;
-        jumpKey.GetComponent<RectTransform>().sizeDelta = jumpSprite.bounds.size * spriteScale;
+        _leftRect.sizeDelta = _leftSprite.bounds.size * spriteScale;
+        _rightRect.sizeDelta = _rightSprite.bounds.size * spriteScale;
+        _upRect.sizeDelta = _upSprite.bounds.size * spriteScale;
+        _downRect.sizeDelta = _downSprite.bounds.size * spriteScale;
+        _jumpRect.sizeDelta = _jumpSprite.bounds.size * spriteScale;
     }
 
-    public void ChangePos()
+    #endregion
+
+    private void ChangePos()
     {
         // bottom row (left, down, right)
-        leftKey.transform.localPosition = new Vector3(leftSprite.bounds.size.x * spriteScale / 2 + xOffset, -yOffset, 0);
-        downKey.transform.localPosition = leftKey.transform.localPosition + new Vector3(leftSprite.bounds.size.x * spriteScale / 2 + xSpacing + downSprite.bounds.size.x * spriteScale / 2, 0, 0);
-        rightKey.transform.localPosition = downKey.transform.localPosition + new Vector3(downSprite.bounds.size.x * spriteScale / 2 + xSpacing + rightSprite.bounds.size.x * spriteScale / 2, 0, 0);
+        _leftKey.transform.localPosition = transform.position + new Vector3(_leftSprite.bounds.size.x * spriteScale / 2 + xPadding, yPadding, 0);
+        _downKey.transform.localPosition = _leftKey.transform.localPosition + new Vector3(_leftSprite.bounds.size.x * spriteScale / 2 + xSpacing + _downSprite.bounds.size.x * spriteScale / 2, 0, 0);
+        _rightKey.transform.localPosition = _downKey.transform.localPosition + new Vector3(_downSprite.bounds.size.x * spriteScale / 2 + xSpacing + _rightSprite.bounds.size.x * spriteScale / 2, 0, 0);
 
         // top row (up)
-        upKey.transform.localPosition = downKey.transform.localPosition + new Vector3(0, downSprite.bounds.size.y * spriteScale / 2 + ySpacing + upSprite.bounds.size.y * spriteScale / 2, 0);
+        _upKey.transform.localPosition = _downKey.transform.localPosition + new Vector3(0, _downSprite.bounds.size.y * spriteScale / 2 + ySpacing + _upSprite.bounds.size.y * spriteScale / 2, 0);
 
         // jump & possibly dash row (jump, dash)
-        jumpKey.transform.localPosition = rightKey.transform.localPosition + new Vector3(rightSprite.bounds.size.x * spriteScale / 2 + blockOffset + jumpSprite.bounds.size.x * spriteScale / 2, 0, 0);
+        _jumpKey.transform.localPosition = _rightKey.transform.localPosition + new Vector3(_rightSprite.bounds.size.x * spriteScale / 2 + blockOffset + _jumpSprite.bounds.size.x * spriteScale / 2, 0, 0);
     }
 
-    public void ResizeBackground()
+    #region Background
+
+    private readonly RectTransform _backgroundRect = _background.GetComponent<RectTransform>();
+
+    private void ResizeBackground()
     {
         // horizontal resize
-        float width = jumpKey.transform.position.x + jumpSprite.bounds.size.x * spriteScale / 2 + xOffset - transform.position.x;
-        background.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
-        background.transform.localPosition = new Vector3(-Screen.currentResolution.width / 2 + width / 2, 0);
+        var width = _leftSprite.bounds.size.x * spriteScale + _downSprite.bounds.size.x * spriteScale + _rightSprite.bounds.size.x * spriteScale + _jumpSprite.bounds.size.x * spriteScale + xPadding * 2 + xSpacing * 2 + blockOffset;
+        var height = _downSprite.bounds.size.y * spriteScale + _upSprite.bounds.size.y * spriteScale + ySpacing +
+                     yPadding * 2;
+        _backgroundRect.sizeDelta = new Vector2(width, height);
+        _background.transform.localPosition = new Vector3(-Screen.currentResolution.width / 2 + width / 2, 0);
     }
+
+    #endregion
 }

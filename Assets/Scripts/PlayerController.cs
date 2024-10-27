@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour, IPlayerController
 {
-    [SerializeField] private ScriptableStats _stats;
+    [SerializeField] private ScriptableStats stats;
 
     private Rigidbody2D _rb;
     private CapsuleCollider2D _col;
@@ -61,10 +61,10 @@ public class PlayerController : MonoBehaviour, IPlayerController
             Move = GetMove()
         };
 
-        if (_stats.SnapInput)
+        if (stats.snapInput)
         {
-            _frameInput.Move.x = Mathf.Abs(_frameInput.Move.x) < _stats.HorizontalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.x);
-            _frameInput.Move.y = Mathf.Abs(_frameInput.Move.y) < _stats.VerticalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.y);
+            _frameInput.Move.x = Mathf.Abs(_frameInput.Move.x) < stats.horizontalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.x);
+            _frameInput.Move.y = Mathf.Abs(_frameInput.Move.y) < stats.verticalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.y);
         }
 
         if (_frameInput.JumpDown)
@@ -88,9 +88,9 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     #region RandomKey
 
-    public KeyCode GetRandomKeyCode()
+    private static KeyCode GetRandomKeyCode()
     {
-        List<KeyCode> keys = new List<KeyCode>()
+        var keys = new List<KeyCode>()
         {
             KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y, KeyCode.U, KeyCode.I, KeyCode.O,
             KeyCode.P,
@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     public int GetIndexOfKeyCode(KeyCode keyCode)
     {
-        List<KeyCode> keys = new List<KeyCode>()
+        var keys = new List<KeyCode>()
         {
             KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y, KeyCode.U, KeyCode.I, KeyCode.O, KeyCode.P,
             KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J, KeyCode.K, KeyCode.L,
@@ -135,21 +135,19 @@ public class PlayerController : MonoBehaviour, IPlayerController
         jumpKey = GetRandomKeyCode();
         dashKey = GetRandomKeyCode();
 
-        if (!allowOverlap)
+        if (allowOverlap) return;
+        var currKeys = new List<KeyCode>()
         {
-            List<KeyCode> currKeys = new List<KeyCode>()
-            {
-                rightKey, leftKey, upKey, downKey, jumpKey, dashKey
-            };
+            rightKey, leftKey, upKey, downKey, jumpKey, dashKey
+        };
 
-            for (int i = 0; i < currKeys.Count; i++)
+        for (var i = 0; i < currKeys.Count; i++)
+        {
+            for (var j = i + 1; j < currKeys.Count; j++)
             {
-                for (int j = i + 1; j < currKeys.Count; j++)
+                while (currKeys[i] == currKeys[j])
                 {
-                    while (currKeys[i] == currKeys[j])
-                    {
-                        currKeys[j] = GetRandomKeyCode();
-                    }
+                    currKeys[j] = GetRandomKeyCode();
                 }
             }
         }
@@ -188,8 +186,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
         Physics2D.queriesStartInColliders = false;
 
         // Ground and Ceiling
-        bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.down, _stats.GrounderDistance, ~_stats.PlayerLayer);
-        bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.up, _stats.GrounderDistance, ~_stats.PlayerLayer);
+        bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.down, stats.grounderDistance, ~stats.playerLayer);
+        bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.up, stats.grounderDistance, ~stats.playerLayer);
 
         // Hit a Ceiling
         if (ceilingHit) _frameVelocity.y = Mathf.Min(0, _frameVelocity.y);
@@ -214,9 +212,13 @@ public class PlayerController : MonoBehaviour, IPlayerController
         Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
     }
 
+    public bool IsGrounded()
+    {
+        return _grounded;
+    }
+
     #endregion
-
-
+    
     #region Jumping
 
     private bool _jumpToConsume;
@@ -225,8 +227,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private bool _coyoteUsable;
     private float _timeJumpWasPressed;
 
-    private bool HasBufferedJump => _bufferedJumpUsable && _time < _timeJumpWasPressed + _stats.JumpBuffer;
-    private bool CanUseCoyote => _coyoteUsable && !_grounded && _time < _frameLeftGrounded + _stats.CoyoteTime;
+    private bool HasBufferedJump => _bufferedJumpUsable && _time < _timeJumpWasPressed + stats.jumpBuffer;
+    private bool CanUseCoyote => _coyoteUsable && !_grounded && _time < _frameLeftGrounded + stats.coyoteTime;
 
     private void HandleJump()
     {
@@ -245,7 +247,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         _timeJumpWasPressed = 0;
         _bufferedJumpUsable = false;
         _coyoteUsable = false;
-        _frameVelocity.y = _stats.JumpPower;
+        _frameVelocity.y = stats.jumpPower;
         Jumped?.Invoke();
     }
 
@@ -257,12 +259,12 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         if (_frameInput.Move.x == 0)
         {
-            var deceleration = _grounded ? _stats.GroundDeceleration : _stats.AirDeceleration;
+            var deceleration = _grounded ? stats.groundDeceleration : stats.airDeceleration;
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
         }
         else
         {
-            _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * _stats.MaxSpeed, _stats.Acceleration * Time.fixedDeltaTime);
+            _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * stats.maxSpeed, stats.acceleration * Time.fixedDeltaTime);
         }
     }
 
@@ -274,13 +276,13 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         if (_grounded && _frameVelocity.y <= 0f)
         {
-            _frameVelocity.y = _stats.GroundingForce;
+            _frameVelocity.y = stats.groundingForce;
         }
         else
         {
-            var inAirGravity = _stats.FallAcceleration;
-            if (_endedJumpEarly && _frameVelocity.y > 0) inAirGravity *= _stats.JumpEndEarlyGravityModifier;
-            _frameVelocity.y = Mathf.MoveTowards(_frameVelocity.y, -_stats.MaxFallSpeed, inAirGravity * Time.fixedDeltaTime);
+            var inAirGravity = stats.fallAcceleration;
+            if (_endedJumpEarly && _frameVelocity.y > 0) inAirGravity *= stats.jumpEndEarlyGravityModifier;
+            _frameVelocity.y = Mathf.MoveTowards(_frameVelocity.y, -stats.maxFallSpeed, inAirGravity * Time.fixedDeltaTime);
         }
     }
 
@@ -291,7 +293,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        if (_stats == null) Debug.LogWarning("Please assign a ScriptableStats asset to the Player Controller's Stats slot", this);
+        if (stats == null) Debug.LogWarning("Please assign a ScriptableStats asset to the Player Controller's Stats slot", this);
     }
 #endif
 }
