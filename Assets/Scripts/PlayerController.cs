@@ -22,9 +22,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public KeyCode jumpKey;
     public KeyCode dashKey;
 
-    [Header("Timer")] public float timerCycle;
-    public float timerTime;
-
     [Header("Randomness")] public bool allowOverlap;
 
     #region Interface
@@ -50,8 +47,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private void Update()
     {
         _time += Time.deltaTime;
-        timerTime += Time.deltaTime;
-        CheckTimer();
         GatherInput();
     }
 
@@ -113,6 +108,24 @@ public class PlayerController : MonoBehaviour, IPlayerController
         return keys[UnityEngine.Random.Range(0, keys.Count)];
     }
 
+    public int GetIndexOfKeyCode(KeyCode keyCode)
+    {
+        List<KeyCode> keys = new List<KeyCode>()
+        {
+            KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y, KeyCode.U, KeyCode.I, KeyCode.O, KeyCode.P,
+            KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J, KeyCode.K, KeyCode.L,
+            KeyCode.Z, KeyCode.X, KeyCode.C, KeyCode.V, KeyCode.B, KeyCode.N, KeyCode.M,
+            KeyCode.Alpha0, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9,
+            KeyCode.Tab, KeyCode.CapsLock, KeyCode.LeftShift, KeyCode.LeftControl, KeyCode.LeftAlt, KeyCode.BackQuote,
+            KeyCode.Minus, KeyCode.Equals, KeyCode.Backspace, KeyCode.LeftBracket, KeyCode.RightBracket,
+            KeyCode.Backslash, KeyCode.Semicolon, KeyCode.Quote, KeyCode.Return,
+            KeyCode.Comma, KeyCode.Period, KeyCode.Slash, KeyCode.RightShift, KeyCode.RightAlt, KeyCode.RightControl,
+            KeyCode.Space
+        };
+
+        return keys.FindIndex(x => x.Equals(keyCode));
+    }
+
     public void RandomizeKeys()
     {
         rightKey = GetRandomKeyCode();
@@ -153,19 +166,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     }
 
     #endregion RandomKey
-
-    #region Timer
-
-    public void CheckTimer()
-    {
-        if (timerTime >= timerCycle)
-        {
-            timerTime -= timerCycle;
-            RandomizeKeys();
-        }
-    }
-
-    #endregion Timer
 
     private void FixedUpdate()
     {
