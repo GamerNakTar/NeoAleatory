@@ -20,15 +20,7 @@ public class KeyGrid : MonoBehaviour
     [Header("Background")]
     public GameObject background;
 
-    public GameObject topLeftCorner;
-    public GameObject topRightCorner;
-    public GameObject bottomLeftCorner;
-    public GameObject bottomRightCorner;
-    public GameObject leftSide;
-    public GameObject rightSide;
-    public GameObject topSide;
-    public GameObject bottomSide;
-    public GameObject fill;
+    [SerializeField] private DynamicTileBackground dynamicTileBackground;
 
     [Header("Offsets")][SerializeField] private float xSpacing;
     [SerializeField] private float ySpacing;
@@ -70,18 +62,7 @@ public class KeyGrid : MonoBehaviour
         _jumpRect = jumpKey.GetComponent<RectTransform>();
 
         _background = background.GetComponent<RectTransform>();
-
-        _topLeftCornerRect = topLeftCorner.GetComponent<RectTransform>();
-        _topRightCornerRect = topRightCorner.GetComponent<RectTransform>();
-        _bottomLeftCornerRect = bottomLeftCorner.GetComponent<RectTransform>();
-        _bottomRightCornerRect = bottomRightCorner.GetComponent<RectTransform>();
-        _leftSideRect = leftSide.GetComponent<RectTransform>();
-        _rightSideRect = rightSide.GetComponent<RectTransform>();
-        _topSideRect = topSide.GetComponent<RectTransform>();
-        _bottomSideRect = bottomSide.GetComponent<RectTransform>();
-        _fillRect = fill.GetComponent<RectTransform>();
-
-        _tileSize = topLeftCorner.GetComponent<Image>().sprite.bounds.size.x;
+        dynamicTileBackground = background.GetComponent<DynamicTileBackground>();
     }
 
     public void UpdateKeyGrid()
@@ -129,6 +110,8 @@ public class KeyGrid : MonoBehaviour
 
     #endregion
 
+    #region Position
+
     private void ChangePos()
     {
         // bottom row (left, down, right)
@@ -143,21 +126,11 @@ public class KeyGrid : MonoBehaviour
         jumpKey.transform.localPosition = rightKey.transform.localPosition + new Vector3(_rightSprite.bounds.size.x * spriteScale / 2 + blockSpacing + _jumpSprite.bounds.size.x * spriteScale / 2, 0, 0);
     }
 
+    #endregion
+
     #region Background
 
     private RectTransform _background;
-
-    private RectTransform _topLeftCornerRect;
-    private RectTransform _topRightCornerRect;
-    private RectTransform _bottomLeftCornerRect;
-    private RectTransform _bottomRightCornerRect;
-    private RectTransform _leftSideRect;
-    private RectTransform _rightSideRect;
-    private RectTransform _topSideRect;
-    private RectTransform _bottomSideRect;
-    private RectTransform _fillRect;
-
-    private float _tileSize;
 
     private void ResizeBackground()
     {
@@ -167,25 +140,7 @@ public class KeyGrid : MonoBehaviour
                      yPadding * 2;
         _background.sizeDelta = new Vector2(width, height);
         background.transform.localPosition = new Vector3(transform.localPosition.x + width / 2, transform.localPosition.y - height / 2, 0);
-
-        _topLeftCornerRect.sizeDelta = new Vector2(_tileSize * spriteScale, _tileSize * spriteScale);
-        _topLeftCornerRect.localPosition = new Vector3(-width / 2 + _tileSize * spriteScale / 2, height / 2 - _tileSize * spriteScale / 2, 0);
-        _topRightCornerRect.sizeDelta = new Vector2(_tileSize * spriteScale, _tileSize * spriteScale);
-        _topRightCornerRect.localPosition = new Vector3(width / 2 - _tileSize * spriteScale / 2, height / 2 - _tileSize * spriteScale / 2, 0);
-        _bottomLeftCornerRect.sizeDelta = new Vector2(_tileSize * spriteScale, _tileSize * spriteScale);
-        _bottomLeftCornerRect.localPosition = new Vector3(-width / 2 + _tileSize * spriteScale / 2, -height / 2 + _tileSize * spriteScale / 2, 0);
-        _bottomRightCornerRect.sizeDelta = new Vector2(_tileSize * spriteScale, _tileSize * spriteScale);
-        _bottomRightCornerRect.localPosition = new Vector3(width / 2 - _tileSize * spriteScale / 2, -height / 2 + _tileSize * spriteScale / 2, 0);
-        _leftSideRect.sizeDelta = new Vector2(_tileSize * spriteScale, height - (_tileSize * spriteScale * 2));
-        _leftSideRect.localPosition = new Vector3(-width / 2 + _tileSize * spriteScale / 2, 0, 0);
-        _rightSideRect.sizeDelta = new Vector2(_tileSize * spriteScale, height - (_tileSize * spriteScale * 2));
-        _rightSideRect.localPosition = new Vector3(width / 2 - _tileSize * spriteScale / 2, 0, 0);
-        _topSideRect.sizeDelta = new Vector2(width - (_tileSize * spriteScale * 2), _tileSize * spriteScale);
-        _topSideRect.localPosition = new Vector3(0, height / 2 - _tileSize * spriteScale / 2, 0);
-        _bottomSideRect.sizeDelta = new Vector2(width - (_tileSize * spriteScale * 2), _tileSize * spriteScale);
-        _bottomSideRect.localPosition = new Vector3(0, -height / 2 + _tileSize * spriteScale / 2, 0);
-        _fillRect.sizeDelta = new Vector2(width - _tileSize * spriteScale * 2, height - _tileSize * spriteScale * 2);
-        _fillRect.localPosition = new Vector3(0, 0, 0);
+        dynamicTileBackground.SetBackground(width, height);
     }
 
     #endregion
