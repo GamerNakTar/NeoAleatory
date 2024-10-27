@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TimerManager : MonoBehaviour
 {
@@ -10,11 +11,14 @@ public class TimerManager : MonoBehaviour
     [SerializeField] private PlayerController player;
     [SerializeField] private KeyGrid keyGrid;
 
+    [Header("UI")] public Image timerBar;
+
     // Update is called once per frame
     void Update()
     {
         time += Time.deltaTime;
         CheckTimer();
+        UpdateSlider();
     }
 
     public void CheckTimer()
@@ -25,5 +29,10 @@ public class TimerManager : MonoBehaviour
             player.RandomizeKeys();
             keyGrid.UpdateKeyGrid();
         }
+    }
+
+    public void UpdateSlider()
+    {
+        timerBar.fillAmount = time / timerCycle;
     }
 }
