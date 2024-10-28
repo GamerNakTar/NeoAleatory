@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class SojuGauge : MonoBehaviour
 {
-    public DynamicTileBackground background;
+    public GameObject dynamicTileBackground;
+    private GameObject _background;
 
-    public float backgroundWidth;
-
-    public float backgroundHeight;
+    public float width;
+    public float height;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        background.rectWidth = backgroundWidth;
-        background.rectHeight = backgroundHeight;
-        background.SetBackground(backgroundWidth, backgroundHeight);
+        _background = Instantiate(dynamicTileBackground, transform);
+        _background.transform.SetAsFirstSibling();
+        _background.GetComponent<DynamicTileBackground>().SetBackground(width, height);
     }
 }

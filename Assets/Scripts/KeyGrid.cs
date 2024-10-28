@@ -14,8 +14,7 @@ public class KeyGrid : MonoBehaviour
     // Background GameObject
     [Header("Background")]
     public GameObject background;
-
-    [SerializeField] private DynamicTileBackground dynamicTileBackground;
+    public DynamicTileBackground dynamicTileBackground;
 
     [Header("Offsets")][SerializeField] private float xSpacing;
     [SerializeField] private float ySpacing;
@@ -55,8 +54,6 @@ public class KeyGrid : MonoBehaviour
         _upRect = upKey.GetComponent<RectTransform>();
         _downRect = downKey.GetComponent<RectTransform>();
         _jumpRect = jumpKey.GetComponent<RectTransform>();
-
-        dynamicTileBackground = background.GetComponent<DynamicTileBackground>();
     }
 
     public void UpdateKeyGrid()
@@ -130,8 +127,8 @@ public class KeyGrid : MonoBehaviour
         var width = _leftSprite.bounds.size.x * spriteScale + _downSprite.bounds.size.x * spriteScale + _rightSprite.bounds.size.x * spriteScale + _jumpSprite.bounds.size.x * spriteScale + xPadding * 2 + xSpacing * 2 + blockSpacing;
         var height = _downSprite.bounds.size.y * spriteScale + _upSprite.bounds.size.y * spriteScale + ySpacing +
                      yPadding * 2;
-        dynamicTileBackground.rectWidth = width;
-        dynamicTileBackground.rectHeight = height;
+        // dynamicTileBackground.rectWidth = width;
+        // dynamicTileBackground.rectHeight = height;
         background.transform.localPosition = new Vector3(transform.localPosition.x + width / 2, transform.localPosition.y - height / 2, 0);
         dynamicTileBackground.SetBackground(width, height);
     }
