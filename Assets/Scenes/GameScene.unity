@@ -2607,7 +2607,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2054189620}
-  - component: {fileID: 2054189622}
+  - component: {fileID: 2054189621}
   m_Layer: 5
   m_Name: SojuGauge
   m_TagString: Untagged
@@ -2631,7 +2631,7 @@ Transform:
   - {fileID: 2005437132}
   m_Father: {fileID: 2012417254}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2054189622
+--- !u!114 &2054189621
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2640,12 +2640,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2054189619}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddcf2ed4290bf7849864d595ae4d717d, type: 3}
+  m_Script: {fileID: 11500000, guid: b358b93f4493a5a42b81c42a7a67c7e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dynamicTileBackground: {fileID: 7749016536401576776, guid: eda9350eebc69184ebb8202e6175e8b4, type: 3}
+  sourceRectangle: {fileID: 7749016536401576776, guid: eda9350eebc69184ebb8202e6175e8b4, type: 3}
   width: 120
   height: 260
+  setAsFirstSibling: 1
 --- !u!1 &2114051735
 GameObject:
   m_ObjectHideFlags: 0

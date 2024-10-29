@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class DynamicTileBackground : MonoBehaviour
+public class DynamicTileBackground : MonoBehaviour, IRectangle
 {
     [SerializeField] private RectTransform[] tileRects;
 
@@ -51,5 +51,10 @@ public class DynamicTileBackground : MonoBehaviour
         tileRects[7].localPosition = new Vector3(0, -height / 2 + _actualTileSize / 2, 0);
         tileRects[8].sizeDelta = new Vector2(width - _actualTileSize * 2, height - _actualTileSize * 2);
         tileRects[8].localPosition = new Vector3(0, 0, 0);
+    }
+
+    public void SetSize(float width, float height)
+    {
+        SetBackground(width, height);
     }
 }
