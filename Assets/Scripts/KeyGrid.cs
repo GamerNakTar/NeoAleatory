@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,7 +61,7 @@ public class KeyGrid : MonoBehaviour
     {
         ChangeSprites();
         ChangePos();
-        ResizeBackground();
+        StartCoroutine(ResizeBackground());
     }
 
     #region Sprite
@@ -121,14 +122,16 @@ public class KeyGrid : MonoBehaviour
 
     #region Background
 
-    private void ResizeBackground()
+    private IEnumerator ResizeBackground()
     {
-        // horizontal resize
         var width = _leftSprite.bounds.size.x * spriteScale + _downSprite.bounds.size.x * spriteScale + _rightSprite.bounds.size.x * spriteScale + _jumpSprite.bounds.size.x * spriteScale + xPadding * 2 + xSpacing * 2 + blockSpacing;
         var height = _downSprite.bounds.size.y * spriteScale + _upSprite.bounds.size.y * spriteScale + ySpacing +
                      yPadding * 2;
-        // dynamicTileBackground.rectWidth = width;
-        // dynamicTileBackground.rectHeight = height;
+        while (!background)
+        {
+            // wait for KeyGuide to assign our background
+            yield return null;
+        }
         background.transform.localPosition = new Vector3(transform.localPosition.x + width / 2, transform.localPosition.y - height / 2, 0);
         dynamicTileBackground.SetBackground(width, height);
     }
