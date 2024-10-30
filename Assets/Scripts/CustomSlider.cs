@@ -25,7 +25,6 @@ public class CustomSlider : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("OnDrag");
         _newX = Mathf.Clamp(Input.mousePosition.x, _minX, _maxX);
         _percent = Mathf.Clamp01((_newX-_minX) / (_maxX-_minX));
         bar.fillAmount = _percent;
@@ -33,13 +32,11 @@ public class CustomSlider : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("OnBeginDrag");
         bar.sprite = dragSprite;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("OnEndDrag");
         bar.sprite = defaultSprite;
     }
 

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cc2c6fe46b79d84419cbab2c949eff71, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2338744e057c0b44780b58b41b08ebe5, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -278,12 +278,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 1665395779538045944}
-  dragSprite: {fileID: 21300000, guid: 0edaa6e80353ef441b255dd28d3d77b7, type: 3}
-  defaultSprite: {fileID: 21300000, guid: cc2c6fe46b79d84419cbab2c949eff71, type: 3}
+  dragSprite: {fileID: 21300000, guid: cc2c6fe46b79d84419cbab2c949eff71, type: 3}
+  defaultSprite: {fileID: 21300000, guid: 2338744e057c0b44780b58b41b08ebe5, type: 3}
   images: []
   rectTransforms: []
   spriteScale: 2
-  width: 300
 --- !u!1 &6825804414248680879
 GameObject:
   m_ObjectHideFlags: 0
