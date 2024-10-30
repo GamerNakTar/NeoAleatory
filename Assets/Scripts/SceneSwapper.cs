@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwapper : MonoBehaviour
 {
+    private static SceneSwapper _instance;
     public enum Scene
     {
         Title,
@@ -12,6 +13,14 @@ public class SceneSwapper : MonoBehaviour
     }
     private void Start()
     {
+        if (!_instance)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
         DontDestroyOnLoad(this.gameObject);
     }
 

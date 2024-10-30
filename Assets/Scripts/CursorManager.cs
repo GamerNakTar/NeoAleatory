@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class CursorManager : MonoBehaviour
 {
+    private static CursorManager _instance;
     public static bool CursorIsOn;
 
     private void Start()
     {
+        if (!_instance)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+
         CursorIsOn = true;
         Cursor.lockState = CursorLockMode.Confined;
         DontDestroyOnLoad(this.gameObject);

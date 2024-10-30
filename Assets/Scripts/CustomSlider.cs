@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class CustomSlider : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IRectangle
 {
+    [SerializeField] private Camera cam;
+
     private RectTransform _myTransform;
     [SerializeField] private Image bar;
     [SerializeField] private Sprite dragSprite;
@@ -42,10 +44,12 @@ public class CustomSlider : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
 
     private void Start()
     {
+        cam = Camera.main;
+
         // get coords
         _myTransform = GetComponent<RectTransform>();
-        _minX = _myTransform.position.x - _width / 2;
-        _maxX = _myTransform.position.x + _width / 2;
+        _minX = cam.WorldToScreenPoint(_myTransform.position).x - _width / 2;
+        _maxX = cam.WorldToScreenPoint(_myTransform.position).x + _width / 2;
 
         // get sprites and rectTransforms
         images = GetComponentsInChildren<Image>();
