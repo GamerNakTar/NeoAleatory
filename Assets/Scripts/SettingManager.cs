@@ -21,13 +21,12 @@ public class SettingManager : MonoBehaviour
         if (!Instance)
         {
             Instance = this;
+            Init();
         }
         else if (Instance != this)
         {
             Destroy(gameObject);
         }
-
-        Init();
     }
 
     private void OnDestroy()
