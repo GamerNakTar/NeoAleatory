@@ -25,11 +25,20 @@ public class CustomSlider : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     private float _percent;
     private float _width;
 
+    [SerializeField] private bool isSetting;
+    [SerializeField] private SettingManager.SettingType settingType;
+
     public void OnDrag(PointerEventData eventData)
     {
         _newX = Mathf.Clamp(Input.mousePosition.x, _minX, _maxX);
         _percent = Mathf.Clamp01((_newX-_minX) / (_maxX-_minX));
         bar.fillAmount = _percent;
+
+        // save setting value
+        if (isSetting)
+        {
+            SettingManager.SetSetting(settingType, _percent);
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -62,6 +71,8 @@ public class CustomSlider : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         _myTransform.sizeDelta = new Vector2(_width, _spriteY);
 
         Resize();
+
+        bar.fillAmount = SettingManager.GetSetting(settingType);
     }
 
     private void Resize()
