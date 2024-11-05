@@ -14,18 +14,11 @@ public class PauseMenu : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !optionWindow.isOpen)
         {
             if (IsPaused)
             {
-                if (optionWindow.isOpen)
-                {
-                    optionWindow.Close();
-                }
-                else
-                {
-                    ResumeGame();
-                }
+                ResumeGame();
             }
             else
             {

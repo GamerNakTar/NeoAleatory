@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0dca678ed7e9da4e9527c4c65b6cbc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOpen: 0
 --- !u!1 &6768774207414055351
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,7 +152,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1147411642795296589}
-  - component: {fileID: 8258050066954214181}
+  - component: {fileID: 4543193920952394978}
   m_Layer: 5
   m_Name: MasterVolumeSlider
   m_TagString: Untagged
@@ -179,7 +180,7 @@ RectTransform:
   m_AnchoredPosition: {x: -585, y: 300}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8258050066954214181
+--- !u!114 &4543193920952394978
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -188,13 +189,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6768774207414055351}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b358b93f4493a5a42b81c42a7a67c7e0, type: 3}
+  m_Script: {fileID: 11500000, guid: 58b6ac72d5d7a2445ad69776814cdca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sourceRectangle: {fileID: 3569954926044751483, guid: 4a03aa768e96b29439a03d7d7e15e16b, type: 3}
+  isSetting: 1
+  settingType: 0
+  spriteScale: 2
+  sliderPrefab: {fileID: 3569954926044751483, guid: 4a03aa768e96b29439a03d7d7e15e16b, type: 3}
   width: 440
   height: 0
-  setAsFirstSibling: 0
 --- !u!1 &7024042232753712276
 GameObject:
   m_ObjectHideFlags: 0

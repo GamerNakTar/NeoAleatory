@@ -18,15 +18,15 @@ public class CustomSlider : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
 
     private float _spriteX;
     private float _spriteY;
-    [SerializeField] private float spriteScale;
+    public float spriteScale;
     private float _minX;
     private float _maxX;
     private float _newX;
     private float _percent;
     private float _width;
 
-    [SerializeField] private bool isSetting;
-    [SerializeField] private SettingManager.SettingType settingType;
+    public bool isSetting;
+    public SettingManager.SettingType settingType;
 
     public void OnDrag(PointerEventData eventData)
     {

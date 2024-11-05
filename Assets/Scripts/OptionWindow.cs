@@ -9,18 +9,23 @@ public class OptionWindow : MonoBehaviour
 {
     public bool isOpen;
 
-    private void Start()
+    private void Update()
     {
-        isOpen = false;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Close();
+        }
     }
 
     private void OnEnable()
     {
+        Debug.Log("OptionWindow OnEnable");
         isOpen = true;
     }
 
     private void OnDisable()
     {
+        Debug.Log("OptionWindow OnDisable");
         isOpen = false;
     }
 
