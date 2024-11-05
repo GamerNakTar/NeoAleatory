@@ -1,18 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class OptionWindow : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public bool isOpen;
+
+    private void Start()
     {
-        
+        isOpen = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        isOpen = true;
+    }
+
+    private void OnDisable()
+    {
+        isOpen = false;
+    }
+
+    public void Close()
+    {
+        gameObject.SetActive(false);
     }
 }

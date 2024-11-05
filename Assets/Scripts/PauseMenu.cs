@@ -6,18 +6,26 @@ using UnityEngine.Serialization;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static bool GameIsPaused = false;
+    public static bool IsPaused = false;
 
     public GameObject pauseMenuUI;
 
-    // Update is called once per frame
+    public OptionWindow optionWindow;
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (GameIsPaused)
+            if (IsPaused)
             {
-                ResumeGame();
+                if (optionWindow.isOpen)
+                {
+                    optionWindow.Close();
+                }
+                else
+                {
+                    ResumeGame();
+                }
             }
             else
             {
@@ -30,7 +38,7 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
-        GameIsPaused = false;
+        IsPaused = false;
 
         CursorManager.TurnCursorOff();
     }
@@ -39,7 +47,7 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
-        GameIsPaused = true;
+        IsPaused = true;
 
         CursorManager.TurnCursorOn();
     }
