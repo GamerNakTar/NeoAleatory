@@ -37,7 +37,7 @@ public class CustomSlider : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         // save setting value
         if (isSetting)
         {
-            SettingManager.SetSetting(settingType, _percent);
+            SettingManager.Instance.SetSetting(settingType, _percent);
         }
     }
 

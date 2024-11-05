@@ -2,11 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SettingManager : MonoBehaviour
 {
     public static SettingManager Instance;
 
+    [Header("Volume")]
+    public AudioMixer audioMixer;
     public static float MasterVolume;
 
     public enum SettingType
@@ -36,7 +39,7 @@ public class SettingManager : MonoBehaviour
 
     private void Init()
     {
-        MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 0f);
     }
 
     private void SavePrefs()
@@ -47,7 +50,7 @@ public class SettingManager : MonoBehaviour
 
     public static void SetDefaultSetting()
     {
-        MasterVolume = 1f;
+        MasterVolume = 0f;
     }
 
     public static float GetSetting(SettingType type)
@@ -61,7 +64,7 @@ public class SettingManager : MonoBehaviour
         }
     }
 
-    public static void SetSetting(SettingType type, float value)
+    public void SetSetting(SettingType type, float value)
     {
         switch (type)
         {
@@ -74,9 +77,10 @@ public class SettingManager : MonoBehaviour
         }
     }
 
-    public static void SetMasterVolume(float volume)
+    public void SetMasterVolume(float volume)
     {
-        MasterVolume = volume;
+        MasterVolume = volume * 100f - 80f;
+        audioMixer.SetFloat("MasterVolume", MasterVolume);
     }
 
     public static float GetMasterVolume()
