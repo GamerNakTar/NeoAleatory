@@ -39,7 +39,7 @@ public class SettingManager : MonoBehaviour
 
     private void Init()
     {
-        MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 0f);
+        MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
     }
 
     private void SavePrefs()
@@ -50,7 +50,7 @@ public class SettingManager : MonoBehaviour
 
     public static void SetDefaultSetting()
     {
-        MasterVolume = 0f;
+        MasterVolume = 1f;
     }
 
     public static float GetSetting(SettingType type)

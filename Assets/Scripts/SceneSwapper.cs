@@ -10,6 +10,8 @@ public class SceneSwapper : MonoBehaviour
     {
         Title,
         Game,
+        Clear,
+        GameOver
     }
     private void Start()
     {
