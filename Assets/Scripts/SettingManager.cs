@@ -10,7 +10,8 @@ public class SettingManager : MonoBehaviour
 
     [Header("Volume")]
     public AudioMixer audioMixer;
-    public static float MasterVolume;
+
+    private static float _masterVolume;
 
     public enum SettingType
     {
@@ -39,18 +40,19 @@ public class SettingManager : MonoBehaviour
 
     private void Init()
     {
-        MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        _masterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        SetMasterVolume(_masterVolume);
     }
 
     private void SavePrefs()
     {
-        PlayerPrefs.SetFloat("MasterVolume", MasterVolume);
+        PlayerPrefs.SetFloat("MasterVolume", _masterVolume);
         PlayerPrefs.Save();
     }
 
     public static void SetDefaultSetting()
     {
-        MasterVolume = 1f;
+        _masterVolume = 1f;
     }
 
     public static float GetSetting(SettingType type)
@@ -79,12 +81,12 @@ public class SettingManager : MonoBehaviour
 
     public void SetMasterVolume(float volume)
     {
-        MasterVolume = volume * 100f - 80f;
-        audioMixer.SetFloat("MasterVolume", MasterVolume);
+        _masterVolume = volume * 100f - 80f;
+        audioMixer.SetFloat("MasterVolume", _masterVolume);
     }
 
     public static float GetMasterVolume()
     {
-        return MasterVolume;
+        return (_masterVolume + 80f) / 100f;
     }
 }

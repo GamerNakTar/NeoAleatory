@@ -72,7 +72,10 @@ public class CustomSlider : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
 
         Resize();
 
-        bar.fillAmount = SettingManager.GetSetting(settingType);
+        if (isSetting)
+        {
+            bar.fillAmount = SettingManager.GetSetting(settingType);
+        }
     }
 
     private void Resize()
