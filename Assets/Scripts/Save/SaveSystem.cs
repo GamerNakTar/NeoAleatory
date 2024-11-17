@@ -2,21 +2,25 @@ using UnityEngine;
 
 public static class SaveSystem
 {
-    public static Vector3 lastCheckpointPosition = new Vector3(0, -2, 0);
+    #region Checkpoint
 
-    public static void SaveCheckpoint(Vector3 position)
+    public static Vector3 LastCheckpointPosition = new Vector3(0, -2, 0);
+    public static int LastCheckpointID = 0;
+    public static Checkpoint LastCheckpoint;
+
+    public static void SaveCheckpointPos(Vector3 position)
     {
-        lastCheckpointPosition = position;
-        
+        LastCheckpointPosition = position;
+
         PlayerPrefs.SetFloat("CheckpointX", position.x);
-        PlayerPrefs.SetFloat("CheckpointY", position.y);
+        PlayerPrefs.SetFloat("CheckpointY", position.y + 1f);
         PlayerPrefs.SetFloat("CheckpointZ", 0f);
         PlayerPrefs.Save();
 
         Debug.Log("Checkpoint Saved: " + position);
     }
 
-    public static Vector3 LoadCheckpoint()
+    public static Vector3 LoadCheckpointPos()
     {
         if (PlayerPrefs.HasKey("CheckpointX"))
         {
@@ -26,6 +30,18 @@ public static class SaveSystem
             return new Vector3(x, y, z);
         }
 
-        return lastCheckpointPosition;
+        return LastCheckpointPosition;
     }
+
+    public static void SaveCheckpointID(int checkpointID)
+    {
+        PlayerPrefs.SetInt("CheckpointID", checkpointID);
+    }
+
+    public static int LoadCheckpointID()
+    {
+        return PlayerPrefs.GetInt("CheckpointID");
+    }
+
+    #endregion
 }

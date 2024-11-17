@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
 
         SetKeysToDefault();
+
+        SpawnAtLastCheckpoint();
     }
 
     private void Update()
@@ -89,7 +91,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     #region RandomKey
 
-    private static KeyCode GetRandomKeyCode()
+    public static KeyCode GetRandomKeyCode()
     {
         var keys = new List<KeyCode>()
         {
@@ -167,6 +169,15 @@ public class PlayerController : MonoBehaviour, IPlayerController
     }
 
     #endregion RandomKey
+
+    #region Spawn
+
+    private void SpawnAtLastCheckpoint()
+    {
+        transform.position = SaveSystem.LoadCheckpointPos();
+    }
+
+    #endregion
 
     private void FixedUpdate()
     {

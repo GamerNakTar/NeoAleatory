@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class PauseMenu : MonoBehaviour
 
     public OptionWindow optionWindow;
 
-    public void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !optionWindow.isOpen)
         {
@@ -25,6 +26,11 @@ public class PauseMenu : MonoBehaviour
                 PauseGame();
             }
         }
+    }
+
+    private void Start()
+    {
+        ResumeGame();
     }
 
     public void ResumeGame()
