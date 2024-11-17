@@ -44,7 +44,14 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
         SetKeysToDefault();
 
-        SpawnAtLastCheckpoint();
+        if (SaveSystem.LoadCheckpointID() != -1)
+        {
+            SpawnAtLastCheckpoint();
+        }
+        else
+        {
+            SpawnAtBar();
+        }
     }
 
     private void Update()
@@ -175,6 +182,11 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private void SpawnAtLastCheckpoint()
     {
         transform.position = SaveSystem.LoadCheckpointPos();
+    }
+
+    private void SpawnAtBar()
+    {
+        transform.position = Bar.BarSpawnPos;
     }
 
     #endregion

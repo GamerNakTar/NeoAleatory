@@ -40,7 +40,7 @@ public static class SaveSystem
 
     public static int LoadCheckpointID()
     {
-        return PlayerPrefs.GetInt("CheckpointID");
+        return PlayerPrefs.GetInt("CheckpointID", -1);
     }
 
     #endregion
